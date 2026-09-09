@@ -1,0 +1,801 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ARSS-I Revision Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --bg:#EAEEEC;
+    --rail:#D7DEDA;
+    --surface:#FFFFFF;
+    --surface-2:#F3F6F4;
+    --ink:#171B18;
+    --muted:#5B6862;
+    --line:#C6CFC9;
+    --accent:#B5730E;
+    --accent-ink:#3A2200;
+    --accent-soft:#F3E1C2;
+    --green:#2E7D53;
+    --green-soft:#DCEEE2;
+    --red:#B23A2E;
+    --red-soft:#F5DEDA;
+    --plate-bg:#171B18;
+    --plate-ink:#F4EFE3;
+    --focus:#1E6FD9;
+    --shadow: 0 1px 2px rgba(20,25,20,.06), 0 8px 24px -12px rgba(20,25,20,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12161C;
+      --rail:#1B212A;
+      --surface:#1A2029;
+      --surface-2:#212832;
+      --ink:#E9ECE7;
+      --muted:#93A098;
+      --line:#2C3540;
+      --accent:#E8A93C;
+      --accent-ink:#1F1300;
+      --accent-soft:#3A2C10;
+      --green:#57B98A;
+      --green-soft:#183226;
+      --red:#E2665A;
+      --red-soft:#3A1D19;
+      --plate-bg:#0C0F12;
+      --plate-ink:#F4EFE3;
+      --focus:#6AA6FF;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 28px -14px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12161C;
+    --rail:#1B212A;
+    --surface:#1A2029;
+    --surface-2:#212832;
+    --ink:#E9ECE7;
+    --muted:#93A098;
+    --line:#2C3540;
+    --accent:#E8A93C;
+    --accent-ink:#1F1300;
+    --accent-soft:#3A2C10;
+    --green:#57B98A;
+    --green-soft:#183226;
+    --red:#E2665A;
+    --red-soft:#3A1D19;
+    --plate-bg:#0C0F12;
+    --plate-ink:#F4EFE3;
+    --focus:#6AA6FF;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 28px -14px rgba(0,0,0,.6);
+  }
+
+  *{box-sizing:border-box;}
+  html{color-scheme:light dark;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--accent-soft); }
+  a{ color:inherit; }
+  button{ font-family:inherit; }
+  :focus-visible{ outline:2px solid var(--focus); outline-offset:2px; }
+
+  .mono{ font-family:"IBM Plex Mono", ui-monospace, "Courier New", monospace; }
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:28px 20px 64px;
+  }
+
+  /* ---- header ---- */
+  header.top{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:24px;
+    flex-wrap:wrap;
+    padding-bottom:22px;
+    margin-bottom:22px;
+    border-bottom:1px solid var(--line);
+  }
+  .brand{ display:flex; align-items:center; gap:14px; }
+  .aspect{
+    display:flex; flex-direction:column; gap:4px;
+    padding:6px; border-radius:8px; background:var(--plate-bg);
+    box-shadow:var(--shadow);
+  }
+  .aspect i{ width:9px; height:9px; border-radius:50%; display:block; }
+  .aspect i:nth-child(1){ background:#D64B3E; }
+  .aspect i:nth-child(2){ background:#E8A93C; }
+  .aspect i:nth-child(3){ background:#3FAE72; }
+  h1{
+    margin:0;
+    font-size:clamp(22px,2.6vw,30px);
+    font-weight:700;
+    letter-spacing:-0.01em;
+    text-wrap:balance;
+  }
+  .kicker{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:11.5px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+    margin:0 0 4px;
+  }
+  .sub{ margin:6px 0 0; color:var(--muted); font-size:14.5px; max-width:56ch; }
+
+  .modebar{ display:flex; gap:8px; align-items:center; }
+  .segmented{
+    display:flex; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:10px; padding:3px; gap:2px;
+  }
+  .segmented button{
+    border:0; background:transparent; color:var(--muted);
+    font-size:13px; font-weight:600; padding:7px 14px; border-radius:8px;
+    cursor:pointer; transition:background .15s ease, color .15s ease;
+  }
+  .segmented button[aria-pressed="true"]{
+    background:var(--surface); color:var(--ink); box-shadow:var(--shadow);
+  }
+  .stat{ font-family:"IBM Plex Mono", monospace; font-size:12.5px; color:var(--muted); white-space:nowrap; }
+
+  /* ---- layout ---- */
+  .layout{
+    display:grid;
+    grid-template-columns:220px 1fr;
+    gap:24px;
+    align-items:start;
+  }
+  @media (max-width:820px){
+    .layout{ grid-template-columns:1fr; }
+  }
+
+  nav.topics{
+    display:flex; flex-direction:column; gap:6px;
+    position:sticky; top:16px;
+  }
+  @media (max-width:820px){
+    nav.topics{
+      position:static;
+      flex-direction:row;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+  }
+  .topic-btn{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    text-align:left;
+    border:1px solid transparent;
+    background:transparent;
+    color:var(--muted);
+    padding:8px 10px;
+    border-radius:8px;
+    font-size:13.5px;
+    font-weight:500;
+    cursor:pointer;
+  }
+  .topic-btn:hover{ background:var(--surface-2); color:var(--ink); }
+  .topic-btn[aria-pressed="true"]{
+    background:var(--accent-soft); color:var(--accent-ink); font-weight:600;
+    border-color:var(--accent);
+  }
+  :root:not([data-theme="light"]) .topic-btn[aria-pressed="true"]{ color:var(--ink); }
+  .topic-count{
+    font-family:"IBM Plex Mono", monospace; font-size:11px; opacity:.75;
+    background:var(--surface); border:1px solid var(--line);
+    padding:1px 6px; border-radius:99px; min-width:24px; text-align:center;
+  }
+
+  main{ min-width:0; }
+
+  /* ---- practice card ---- */
+  .stage{
+    display:flex; flex-direction:column; gap:16px;
+  }
+  .progress-row{ display:flex; align-items:center; gap:12px; }
+  .progress-track{
+    flex:1; height:5px; border-radius:99px; background:var(--rail); overflow:hidden;
+  }
+  .progress-fill{ height:100%; background:var(--accent); border-radius:99px; transition:width .2s ease; }
+  .progress-label{ font-family:"IBM Plex Mono", monospace; font-size:12px; color:var(--muted); white-space:nowrap; }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:16px;
+    box-shadow:var(--shadow);
+    padding:34px 36px 28px;
+    min-height:290px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+  }
+  @media (max-width:600px){ .card{ padding:24px 20px 22px; } }
+
+  .card-top{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .cat-tag{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--accent); font-weight:600;
+  }
+  .star-btn{
+    border:1px solid var(--line); background:var(--surface-2); color:var(--muted);
+    width:32px; height:32px; border-radius:8px; cursor:pointer; font-size:15px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .star-btn[data-on="true"]{ color:var(--accent); border-color:var(--accent); background:var(--accent-soft); }
+
+  .question{
+    font-size:clamp(19px,2.4vw,25px);
+    font-weight:600;
+    line-height:1.4;
+    text-wrap:balance;
+    margin:0;
+    flex:1;
+  }
+
+  .answer-zone{ min-height:64px; display:flex; align-items:center; }
+  .reveal-btn{
+    border:1px dashed var(--line);
+    background:var(--surface-2);
+    color:var(--muted);
+    font-size:13.5px; font-weight:600;
+    padding:10px 16px; border-radius:10px; cursor:pointer;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .reveal-btn:hover{ color:var(--ink); border-color:var(--accent); }
+  .plate{
+    display:inline-flex;
+    align-items:center;
+    background:var(--plate-bg);
+    color:var(--plate-ink);
+    padding:12px 18px;
+    border-radius:8px;
+    font-family:"IBM Plex Mono", monospace;
+    font-weight:600;
+    font-size:16px;
+    letter-spacing:.02em;
+    box-shadow:var(--shadow);
+  }
+
+  .card-nav{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding-top:6px; border-top:1px solid var(--line);
+  }
+  .nav-btns{ display:flex; gap:8px; }
+  .nav-btn{
+    border:1px solid var(--line); background:var(--surface-2); color:var(--ink);
+    padding:9px 15px; border-radius:9px; font-size:13.5px; font-weight:600; cursor:pointer;
+  }
+  .nav-btn:hover{ border-color:var(--accent); }
+  .nav-btn:disabled{ opacity:.4; cursor:not-allowed; }
+  .nav-btn.primary{ background:var(--accent); border-color:var(--accent); color:var(--accent-ink); }
+  .shuffle-btn{
+    border:1px solid var(--line); background:transparent; color:var(--muted);
+    padding:9px 12px; border-radius:9px; font-size:13px; cursor:pointer;
+  }
+  .shuffle-btn:hover{ color:var(--ink); }
+
+  kbd{
+    font-family:"IBM Plex Mono", monospace; font-size:11px;
+    background:var(--surface-2); border:1px solid var(--line);
+    border-bottom-width:2px; padding:1px 6px; border-radius:5px; color:var(--muted);
+  }
+  .hint{ font-size:12px; color:var(--muted); text-align:center; }
+
+  /* ---- review list ---- */
+  .review-list{ display:flex; flex-direction:column; gap:22px; }
+  .review-group h2{
+    font-size:12px; letter-spacing:.1em; text-transform:uppercase;
+    font-family:"IBM Plex Mono", monospace; color:var(--accent);
+    margin:0 0 10px; padding-bottom:8px; border-bottom:1px solid var(--line);
+  }
+  .review-item{
+    display:grid; grid-template-columns:1fr auto; gap:8px 20px;
+    align-items:baseline;
+    padding:11px 4px; border-bottom:1px dashed var(--line);
+  }
+  .review-item:last-child{ border-bottom:0; }
+  .review-q{ font-size:14.5px; }
+  .review-a{
+    font-family:"IBM Plex Mono", monospace; font-size:13px; font-weight:600;
+    color:var(--green); background:var(--green-soft); padding:3px 9px; border-radius:6px;
+    white-space:nowrap; justify-self:end;
+  }
+  @media (max-width:560px){
+    .review-item{ grid-template-columns:1fr; }
+    .review-a{ justify-self:start; }
+  }
+
+  footer{
+    margin-top:36px; padding-top:16px; border-top:1px solid var(--line);
+    color:var(--muted); font-size:12px; text-align:center;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <div class="aspect" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div>
+        <p class="kicker">Narayan Rail Academy · ARSS&#8209;I</p>
+        <h1>Day&nbsp;1 Revision Deck</h1>
+        <p class="sub">Short-answer drill built from the 5&#8209;8&#8209;2026 morning session — relays, track detection, table of control, and electrified&#8209;area signalling.</p>
+      </div>
+    </div>
+    <div class="modebar">
+      <span class="stat" id="statLine"></span>
+      <div class="segmented" role="tablist" aria-label="View mode">
+        <button id="modePractice" role="tab" aria-pressed="true">Practice</button>
+        <button id="modeReview" role="tab" aria-pressed="false">Review all</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="topics" id="topics" aria-label="Filter by module"></nav>
+
+    <main>
+      <!-- PRACTICE MODE -->
+      <section class="stage" id="practiceStage">
+        <div class="progress-row">
+          <span class="progress-label" id="progressLabel">1 / 1</span>
+          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+          <button class="shuffle-btn" id="shuffleBtn" title="Shuffle this set">&#8635; Shuffle</button>
+          <button class="shuffle-btn" id="starredOnlyBtn" title="Show only starred cards" aria-pressed="false">&#9733; Starred</button>
+        </div>
+
+        <div class="card">
+          <div class="card-top">
+            <span class="cat-tag" id="cardCat"></span>
+            <button class="star-btn" id="starBtn" title="Mark for review" data-on="false">&#9733;</button>
+          </div>
+          <p class="question" id="cardQ"></p>
+          <div class="answer-zone" id="answerZone">
+            <button class="reveal-btn" id="revealBtn">Show answer <kbd>Space</kbd></button>
+          </div>
+          <div class="card-nav">
+            <div class="nav-btns">
+              <button class="nav-btn" id="prevBtn">&larr; Prev</button>
+              <button class="nav-btn primary" id="nextBtn">Next &rarr;</button>
+            </div>
+            <span class="hint">Use <kbd>&larr;</kbd> <kbd>&rarr;</kbd> to move, <kbd>Space</kbd> to flip</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- REVIEW MODE -->
+      <section class="review-list" id="reviewStage" hidden></section>
+    </main>
+  </div>
+
+  <footer>148 questions · 19 modules · answers are the short cue you'd write on a table of control, not full sentences.</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  const DECK = [
+    // Signals & Interlocking basics
+    {cat:"Signals & Interlocking", q:"What are the two forms of signals used?", a:"Semaphore, colour light"},
+    {cat:"Signals & Interlocking", q:"Name the three forms of interlocking.", a:"Mechanical, relay, electronic"},
+    {cat:"Signals & Interlocking", q:"In relay interlocking, what device operates points, signals and LC gates?", a:"Electro-mechanical relays"},
+    {cat:"Signals & Interlocking", q:"Which document lists the safety requirements to be achieved through relay circuits?", a:"Table of control"},
+
+    // Relay principles
+    {cat:"Relay Principles", q:"What is the de-energised contact of a relay called?", a:"Back contact"},
+    {cat:"Relay Principles", q:"What is the energised contact of a relay called?", a:"Front contact"},
+    {cat:"Relay Principles", q:"What are the two supply rails of a shelf relay commonly marked?", a:"B24, N24"},
+    {cat:"Relay Principles", q:"Based on contact configuration, relays are classed as metal-to-metal and ___?", a:"Metal-to-carbon"},
+    {cat:"Relay Principles", q:"Based on sensitivity, relays are classed as track relays and ___?", a:"Line relays"},
+    {cat:"Relay Principles", q:"Based on operating time, relays are classed as normal and ___ relay?", a:"Thermal element"},
+    {cat:"Relay Principles", q:"What type of relay must be used in an electrified (RE) area circuit?", a:"AC immunized DC relay"},
+    {cat:"Relay Principles", q:"What spare contact margin should be kept on a relay?", a:"10-20%"},
+    {cat:"Relay Principles", q:"Maximum number of wires permitted at any one relay contact?", a:"Two"},
+    {cat:"Relay Principles", q:"Roughly how many types of relays exist in signalling?", a:"About 65"},
+    {cat:"Relay Principles", q:"On a relay marked \"8F/B\", what does F/B mean?", a:"8 front, 8 back"},
+    {cat:"Relay Principles", q:"Where should the relay be fixed for retention?", a:"Relay rack"},
+
+    // Relay categories
+    {cat:"Relay Categories", q:"Name the four categories relays are grouped into.", a:"Command, gears, feedback, logic"},
+    {cat:"Relay Categories", q:"Which relay proves the Station Master's presence?", a:"SMR"},
+    {cat:"Relay Categories", q:"Which relay proves the signal button is pressed?", a:"GNR"},
+    {cat:"Relay Categories", q:"Which relay proves the route button is pressed?", a:"UNR"},
+    {cat:"Relay Categories", q:"Which relay handles signal cancellation?", a:"EUGNR"},
+    {cat:"Relay Categories", q:"Which relays operate a point Normal↔Reverse?", a:"WNR / WRR"},
+    {cat:"Relay Categories", q:"Which relays control signal aspects (caution/attention/clear)?", a:"HR / HHR / DR"},
+    {cat:"Relay Categories", q:"Which relay controls route indication lamps?", a:"UR"},
+    {cat:"Relay Categories", q:"Which relay authorizes crank handle use?", a:"CHYR"},
+    {cat:"Relay Categories", q:"Which relay authorizes an LC gate to open?", a:"LXYR"},
+    {cat:"Relay Categories", q:"Which relay authorizes a siding point to be operated?", a:"KLCYR"},
+    {cat:"Relay Categories", q:"Which relay shows track occupied/clear status?", a:"TR / TPR"},
+    {cat:"Relay Categories", q:"RECR, HECR and DECR are examples of which relay type?", a:"Lamp checking relays"},
+    {cat:"Relay Categories", q:"Which relay confirms the crank handle is secured?", a:"CHLR"},
+    {cat:"Relay Categories", q:"Which relay confirms the LC gate is closed?", a:"LXPR"},
+    {cat:"Relay Categories", q:"Which relay confirms the siding point is secured Normal?", a:"KLCPR"},
+
+    // Circuits
+    {cat:"Internal & External Circuits", q:"Circuits within the same four walls/location are called?", a:"Internal circuits"},
+    {cat:"Internal & External Circuits", q:"Circuits linking the relay room to field equipment via cable are called?", a:"External circuits"},
+    {cat:"Internal & External Circuits", q:"What cutting arrangement must external circuits use, and why?", a:"Double cutting"},
+    {cat:"Internal & External Circuits", q:"What cutting arrangement is typical for internal circuits?", a:"Single cutting"},
+    {cat:"Internal & External Circuits", q:"External circuits are connected through what medium?", a:"Underground cables"},
+
+    // DC Track Circuits
+    {cat:"DC Track Circuits", q:"What power supply voltage feeds a DC track circuit?", a:"2–4V DC"},
+    {cat:"DC Track Circuits", q:"What isolates one track circuit from the next physically?", a:"Insulation joints (IRJ)"},
+    {cat:"DC Track Circuits", q:"Maximum DC track circuit length with concrete sleepers?", a:"350m"},
+    {cat:"DC Track Circuits", q:"Maximum DC track circuit length with wooden sleepers?", a:"450m"},
+    {cat:"DC Track Circuits", q:"Minimum permitted length of a track circuit?", a:"26m"},
+    {cat:"DC Track Circuits", q:"When a train occupies a DC track circuit, what happens to the relay?", a:"De-energizes"},
+    {cat:"DC Track Circuits", q:"In electrified territory a DC track circuit becomes a ___ rail circuit.", a:"Single rail"},
+
+    // AFTC
+    {cat:"AFTC", q:"What does AFTC stand for?", a:"Audio Frequency Track Circuit"},
+    {cat:"AFTC", q:"AFTC operates within which frequency band?", a:"20Hz–20kHz"},
+    {cat:"AFTC", q:"AFTC is described as a ___ track circuit (no rail insulation).", a:"Joint-less"},
+    {cat:"AFTC", q:"Maximum remote-feeding distance for AFTC?", a:"3.5 km"},
+    {cat:"AFTC", q:"Maximum length of an end-fed AFTC section?", a:"800–1000m"},
+    {cat:"AFTC", q:"Maximum length of a centre-fed AFTC section?", a:"1600–2000m"},
+    {cat:"AFTC", q:"What device isolates adjacent AFTC frequencies electrically?", a:"Tuning unit"},
+    {cat:"AFTC", q:"In locally fed AFTC, where are Tx/Rx kept?", a:"Location boxes"},
+    {cat:"AFTC", q:"In remote fed AFTC, where are Tx/Rx kept?", a:"AFTC room"},
+
+    // Axle Counters
+    {cat:"Axle Counters", q:"Besides transmitter and receiver, what is the third core AXC component?", a:"Evaluator"},
+    {cat:"Axle Counters", q:"Maximum section length coverable by Universal Axle Counters?", a:"15 km"},
+    {cat:"Axle Counters", q:"A 1D axle counter system is typically used for what type of track?", a:"Siding / berthing"},
+    {cat:"Axle Counters", q:"A 3D system covers a section with how many points?", a:"One point"},
+    {cat:"Axle Counters", q:"A 4D system covers a section with how many points?", a:"Two points"},
+    {cat:"Axle Counters", q:"Which reset type requires cooperation between SM and a field verifier?", a:"Conditional hard reset"},
+    {cat:"Axle Counters", q:"Which reset type is used for sections without a person to depute, e.g. IBS?", a:"Preparatory reset"},
+    {cat:"Axle Counters", q:"Which reset auto-clears a failed section if its supervisory section is clear?", a:"Supervisory / auto reset"},
+    {cat:"Axle Counters", q:"What does SSDAC stand for?", a:"Single Section Digital Axle Counter"},
+    {cat:"Axle Counters", q:"CEL-710P SSDAC works on which modulation technique?", a:"Phase modulation"},
+    {cat:"Axle Counters", q:"In SSDAC, VR and PR stand for?", a:"Vital relay, proving relay"},
+    {cat:"Axle Counters", q:"How far from a rail joint must an SSDAC detection unit be installed?", a:"6 sleepers"},
+    {cat:"Axle Counters", q:"What does HASSDAC stand for?", a:"High Availability SSDAC"},
+    {cat:"Axle Counters", q:"Maximum working distance of a HASSDAC system?", a:"20 km"},
+    {cat:"Axle Counters", q:"Minimum separation between two adjacent HASSDAC detector sets?", a:"2m"},
+
+    // Points & Point Machines
+    {cat:"Points & Point Machines", q:"What are the two positions a point can be set to?", a:"Normal, Reverse"},
+    {cat:"Points & Point Machines", q:"How many switches does a trap/derailing point have?", a:"One"},
+    {cat:"Points & Point Machines", q:"Name the rod that moves the point Normal to Reverse.", a:"Throw rod"},
+    {cat:"Points & Point Machines", q:"Which rod locks the point in its set position?", a:"Locking rod"},
+    {cat:"Points & Point Machines", q:"Which rod is used to electrically prove point position?", a:"Detecting rod"},
+    {cat:"Points & Point Machines", q:"Relay proving a point is set & locked Normal?", a:"NWKR"},
+    {cat:"Points & Point Machines", q:"Relay proving a point is set & locked Reverse?", a:"RWKR"},
+    {cat:"Points & Point Machines", q:"Relay proving all conditions to operate a point are met?", a:"WLR"},
+    {cat:"Points & Point Machines", q:"Relay that drives a point towards Reverse?", a:"WRR / RWR"},
+    {cat:"Points & Point Machines", q:"Standard DC point machine operating voltage?", a:"110V DC"},
+    {cat:"Points & Point Machines", q:"Standard split-field (AC) point machine voltage?", a:"380V AC"},
+
+    // Crank Handle & Point Conditions
+    {cat:"Crank Handle & Point Conditions", q:"In which instrument is a crank handle secured?", a:"Electrical Key Transmitter"},
+    {cat:"Crank Handle & Point Conditions", q:"Relay proving the crank handle is not in use?", a:"CHLR"},
+    {cat:"Crank Handle & Point Conditions", q:"Relay proving Station Master's consent to operate a point?", a:"SMR"},
+    {cat:"Crank Handle & Point Conditions", q:"Relay proving the signal is not taken off over a point?", a:"ASR"},
+    {cat:"Crank Handle & Point Conditions", q:"Relay proving a point is clear of any overlap?", a:"OLASR"},
+    {cat:"Crank Handle & Point Conditions", q:"Which relays prove the point zone track is unoccupied?", a:"TPRs"},
+
+    // Operating Panels
+    {cat:"Operating Panels", q:"What does PI stand for in station operating panels?", a:"Panel Interlocking"},
+    {cat:"Operating Panels", q:"What does RRI stand for?", a:"Route Relay Interlocking"},
+    {cat:"Operating Panels", q:"Which panel type is non-route-setting (points and signals operated separately)?", a:"PI"},
+    {cat:"Operating Panels", q:"Which panel type sets a whole route with one operation?", a:"RRI"},
+    {cat:"Operating Panels", q:"RRI is generally adopted for what type of station?", a:"Major yards"},
+    {cat:"Operating Panels", q:"In RRI, a command needs a minimum of how many correct buttons pressed?", a:"Two"},
+    {cat:"Operating Panels", q:"Name the three panel types that support Electronic Interlocking.", a:"Push button, VDU, touch panel"},
+
+    // Essentials of Interlocking (4 rules)
+    {cat:"Interlocking Rules", q:"Rule 1 of interlocking is commonly called what?", a:"Route setting"},
+    {cat:"Interlocking Rules", q:"Rule 2 of interlocking is commonly called what?", a:"Route locking"},
+    {cat:"Interlocking Rules", q:"Rule 3 of interlocking is commonly called what?", a:"Conflicting signals"},
+    {cat:"Interlocking Rules", q:"Rule 4 of interlocking is commonly called what?", a:"Conflicting points"},
+    {cat:"Interlocking Rules", q:"Rule 4 is mainly associated with which interlocking type?", a:"Mechanical"},
+
+    // Route Holding
+    {cat:"Route Holding", q:"Name the three parts of route holding.", a:"Approach, indication, back locking"},
+    {cat:"Route Holding", q:"Which relay is central to approach and route locking?", a:"ASR"},
+    {cat:"Route Holding", q:"If there is no approach track circuit, what is written in the column instead?", a:"DA"},
+    {cat:"Route Holding", q:"Time delay applied for Dead Approach locking (DA)?", a:"120 seconds"},
+    {cat:"Route Holding", q:"\"Back locked by TC\" excludes which track circuit?", a:"Berthing TC"},
+    {cat:"Route Holding", q:"For how long is an overlap held after the train clears into the berthing track?", a:"120 seconds"},
+    {cat:"Route Holding", q:"Relay ensuring \"one signal, one train\"?", a:"TSR"},
+    {cat:"Route Holding", q:"Relay proving a particular route has been set?", a:"UCR"},
+    {cat:"Route Holding", q:"Which three relays together achieve route holding and locking?", a:"ASR, TSR, UCR"},
+
+    // LC Gate
+    {cat:"LC Gate Interlocking", q:"Relay proving the LC gate is closed against road traffic?", a:"LXPR"},
+    {cat:"LC Gate Interlocking", q:"Relay authorizing the LC gate to be opened?", a:"LXYR"},
+    {cat:"LC Gate Interlocking", q:"What marker must never appear on a signal interlocked with an LC gate?", a:"G marker"},
+
+    // Conflicting Signals
+    {cat:"Conflicting Signals", q:"Which rule of interlocking governs conflicting signals?", a:"Rule 3"},
+    {cat:"Conflicting Signals", q:"Name the two ways conflicting-signal locking can be achieved.", a:"Direct, indirect"},
+    {cat:"Conflicting Signals", q:"Locking that is indirectly achieved but still written in the TOC is called?", a:"Redundant locking"},
+    {cat:"Conflicting Signals", q:"Conflicting signals are ultimately locked against each other through common what?", a:"Points"},
+
+    // Signal Lighting / Red Lamp
+    {cat:"Signal Lighting", q:"Cascading arrangement changes the aspect to which type on bulb fuse?", a:"Less restrictive"},
+    {cat:"Signal Lighting", q:"If the red bulb of a signal fuses, what does the signal in rear show?", a:"Danger"},
+    {cat:"Signal Lighting", q:"What condition must a colour-light signal never display?", a:"Blank"},
+    {cat:"Signal Lighting", q:"Which relay checks the red lamp is lit?", a:"RECR"},
+    {cat:"Signal Lighting", q:"Which relay checks the yellow lamp is lit?", a:"HECR"},
+    {cat:"Signal Lighting", q:"Which relay checks the green lamp is lit?", a:"DECR"},
+    {cat:"Signal Lighting", q:"Which aspect of a signal has no controlling relay at all?", a:"Red / Danger"},
+    {cat:"Signal Lighting", q:"Glow voltage of a signal lamp rated at 12V?", a:"2.3V"},
+    {cat:"Signal Lighting", q:"Rule of thumb: relays needed = number of aspects minus?", a:"One"},
+
+    // Electrified Area
+    {cat:"Electrified Area", q:"OHE requires which supply for traction?", a:"25kV single phase"},
+    {cat:"Electrified Area", q:"Length of the neutral section at an SSP?", a:"41m"},
+    {cat:"Electrified Area", q:"Typical spacing between Traction Sub-Stations (TSS)?", a:"40–80 km"},
+    {cat:"Electrified Area", q:"Radius of the \"arching zone\" around the live conductor?", a:"320mm"},
+    {cat:"Electrified Area", q:"Radius of the \"shaded portion\" requiring a protective screen?", a:"2000mm"},
+    {cat:"Electrified Area", q:"Minimum earthing resistance required for a protective metal screen?", a:"10 ohms"},
+    {cat:"Electrified Area", q:"Normal height of the contact wire above rail level?", a:"5.6m"},
+    {cat:"Electrified Area", q:"Maximum permitted contact wire height?", a:"7.05m"},
+    {cat:"Electrified Area", q:"Minimum contact wire height at bridges/tunnels?", a:"4.58m"},
+    {cat:"Electrified Area", q:"Distance the catenary is staggered from track centre?", a:"200mm"},
+    {cat:"Electrified Area", q:"Approximate catenary current carried in OHE?", a:"1000 Amps"},
+    {cat:"Electrified Area", q:"Maximum length of parallelism allowed for signalling cables?", a:"3.5 km"},
+    {cat:"Electrified Area", q:"Maximum length of parallelism allowed for power cables?", a:"2 km"},
+    {cat:"Electrified Area", q:"Minimum clearance from an OHE mast in advance of a signal?", a:"30m"},
+    {cat:"Electrified Area", q:"Minimum clearance from an OHE mast in rear of a signal?", a:"10m"},
+    {cat:"Electrified Area", q:"Name the three track detecting devices permitted in an RE area.", a:"DC single-rail TC, AFTC, axle counters"},
+    {cat:"Electrified Area", q:"What device is added at the feed/relay ends of a DC track circuit in RE area?", a:"Chokes"},
+    {cat:"Electrified Area", q:"Name the three types of rail bonding.", a:"Transverse, cross, structural"},
+    {cat:"Electrified Area", q:"What must be staggered between adjacent track circuits in RE territory?", a:"Polarities"},
+    {cat:"Electrified Area", q:"Local signal feed limits length of parallelism to what distance?", a:"3.5 km"},
+
+    // Cables
+    {cat:"Cables & Meggering", q:"Minimum cable-to-OHE-mast distance when the cable pit is ≤0.5m deep?", a:"1m"},
+    {cat:"Cables & Meggering", q:"Minimum cable-to-OHE-mast distance when the pit is >0.5m deep?", a:"3m"},
+    {cat:"Cables & Meggering", q:"Minimum depth at which signalling cable must be laid?", a:"1m"},
+    {cat:"Cables & Meggering", q:"Standard length of a signalling cable drum?", a:"500m"},
+    {cat:"Cables & Meggering", q:"Conductor size typically used for indoor (internal) wiring?", a:"0.9mm"},
+    {cat:"Cables & Meggering", q:"Conductor size typically used for track lead wires?", a:"2.5 sq mm"},
+    {cat:"Cables & Meggering", q:"Name the three cable health tests performed.", a:"Insulation, earth, continuity"},
+    {cat:"Cables & Meggering", q:"Minimum acceptable insulation-test reading?", a:"20 megohms"},
+    {cat:"Cables & Meggering", q:"Instrument used to conduct cable meggering?", a:"Megger"},
+    {cat:"Cables & Meggering", q:"Approximate test voltage produced by a cable megger?", a:"500V"},
+    {cat:"Cables & Meggering", q:"Terminal type used to isolate cable cores for testing?", a:"ARA terminal"},
+
+    // Power Supply & Datalogger
+    {cat:"Power Supply & Datalogger", q:"How many standby diesel generators are typically provided at a station?", a:"One"},
+    {cat:"Power Supply & Datalogger", q:"What does IPS stand for in signalling power supply?", a:"Integrated Power Supply"},
+    {cat:"Power Supply & Datalogger", q:"Standard DC voltage used for point operation supply?", a:"110V DC"},
+    {cat:"Power Supply & Datalogger", q:"A datalogger is described as the ___ of signalling.", a:"Black box"},
+    {cat:"Power Supply & Datalogger", q:"What is the mini-datalogger used at Auto/IBS sections called?", a:"RTU"},
+    {cat:"Power Supply & Datalogger", q:"Datalogger records relay contact changes as which type of input?", a:"Digital input"},
+    {cat:"Power Supply & Datalogger", q:"Datalogger records voltage/current levels as which type of input?", a:"Analog input"},
+
+    // Block System & BPAC
+    {cat:"Block System & BPAC", q:"What does BPAC stand for?", a:"Block Proving Axle Counter"},
+    {cat:"Block System & BPAC", q:"What does UFSBI stand for?", a:"Universal Fail Safe Block Interface"},
+    {cat:"Block System & BPAC", q:"BPAC eliminates the need for the SM to physically observe what on the last coach?", a:"Cross / tail mark"},
+    {cat:"Block System & BPAC", q:"BPAC used without a conventional block instrument is called?", a:"Axle Counter Block Working"},
+    {cat:"Block System & BPAC", q:"On double line, which axle counter type is used per line for BPAC?", a:"SSDAC / Universal AXC"},
+
+    // Electronic Interlocking
+    {cat:"Electronic Interlocking", q:"Name the two typical command input devices for EI.", a:"Lever frame, VDU"},
+    {cat:"Electronic Interlocking", q:"What does OBC stand for in a distributed EI system?", a:"Object Controller"},
+    {cat:"Electronic Interlocking", q:"An OFC ring in EI typically links Master OBC to which two side OBCs?", a:"East, West"},
+    {cat:"Electronic Interlocking", q:"Maximum cable distance permitted between an OC and the CIU?", a:"15 km"},
+    {cat:"Electronic Interlocking", q:"A distributed EI system mainly eliminates the need for what?", a:"Main cables"},
+
+    // Testing
+    {cat:"Testing", q:"Name the two categories of signal testing against the table of control.", a:"Positive, negative"},
+    {cat:"Testing", q:"In a positive test, what must be possible if all conditions are favourable?", a:"Taking off the signal"},
+    {cat:"Testing", q:"List the three obstruction sizes used in point testing gauges.", a:"1.6mm, 3mm, 5mm"},
+    {cat:"Testing", q:"Distance from the tongue-rail tip at which the test gauge is placed?", a:"150mm"},
+    {cat:"Testing", q:"Approximate slipping current relative to normal working current?", a:"1.5–2x"},
+    {cat:"Testing", q:"The first track circuit after a signal, used in the TSR circuit, is called?", a:"Controlling TC"}
+  ];
+
+  // ---------- state ----------
+  let currentCat = "All";
+  let order = DECK.map((_,i)=>i);
+  let pos = 0;
+  let revealed = false;
+  let starredOnly = false;
+  let starred = new Set();
+  try{
+    const saved = JSON.parse(localStorage.getItem("arss1_starred")||"[]");
+    starred = new Set(saved);
+  }catch(e){}
+
+  function saveStars(){
+    try{ localStorage.setItem("arss1_starred", JSON.stringify([...starred])); }catch(e){}
+  }
+
+  const cats = ["All", ...Array.from(new Set(DECK.map(d=>d.cat)))];
+
+  // ---------- elements ----------
+  const topicsNav = document.getElementById("topics");
+  const statLine = document.getElementById("statLine");
+  const cardCat = document.getElementById("cardCat");
+  const cardQ = document.getElementById("cardQ");
+  const answerZone = document.getElementById("answerZone");
+  const revealBtn = document.getElementById("revealBtn");
+  const progressLabel = document.getElementById("progressLabel");
+  const progressFill = document.getElementById("progressFill");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const shuffleBtn = document.getElementById("shuffleBtn");
+  const starBtn = document.getElementById("starBtn");
+  const starredOnlyBtn = document.getElementById("starredOnlyBtn");
+  const modePractice = document.getElementById("modePractice");
+  const modeReview = document.getElementById("modeReview");
+  const practiceStage = document.getElementById("practiceStage");
+  const reviewStage = document.getElementById("reviewStage");
+
+  // ---------- topic sidebar ----------
+  function renderTopics(){
+    topicsNav.innerHTML = "";
+    cats.forEach(cat=>{
+      const count = cat==="All" ? DECK.length : DECK.filter(d=>d.cat===cat).length;
+      const btn = document.createElement("button");
+      btn.className = "topic-btn";
+      btn.type = "button";
+      btn.setAttribute("aria-pressed", String(cat===currentCat));
+      btn.innerHTML = '<span>'+cat+'</span><span class="topic-count">'+count+'</span>';
+      btn.addEventListener("click", ()=>{
+        currentCat = cat;
+        rebuildOrder();
+        renderTopics();
+        renderReview();
+      });
+      topicsNav.appendChild(btn);
+    });
+  }
+
+  function currentIndices(){
+    let idxs = DECK.map((_,i)=>i);
+    if(currentCat!=="All") idxs = idxs.filter(i=>DECK[i].cat===currentCat);
+    if(starredOnly) idxs = idxs.filter(i=>starred.has(i));
+    return idxs;
+  }
+
+  function rebuildOrder(){
+    order = currentIndices();
+    pos = 0;
+    revealed = false;
+    renderCard();
+  }
+
+  function shuffleOrder(){
+    for(let i=order.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [order[i],order[j]] = [order[j],order[i]];
+    }
+    pos = 0;
+    revealed = false;
+    renderCard();
+  }
+
+  // ---------- practice card ----------
+  function renderCard(){
+    statLine.textContent = DECK.length + " questions · " + (cats.length-1) + " modules";
+    if(order.length===0){
+      cardCat.textContent = currentCat;
+      cardQ.textContent = starredOnly ? "No starred cards yet — star a few while you practice." : "No cards in this module.";
+      answerZone.innerHTML = "";
+      progressLabel.textContent = "0 / 0";
+      progressFill.style.width = "0%";
+      prevBtn.disabled = true; nextBtn.disabled = true;
+      starBtn.style.visibility = "hidden";
+      return;
+    }
+    starBtn.style.visibility = "visible";
+    const idx = order[pos];
+    const item = DECK[idx];
+    cardCat.textContent = item.cat;
+    cardQ.textContent = item.q;
+    progressLabel.textContent = (pos+1) + " / " + order.length;
+    progressFill.style.width = ((pos+1)/order.length*100) + "%";
+    prevBtn.disabled = pos===0;
+    nextBtn.textContent = pos===order.length-1 ? "Restart ↺" : "Next →";
+    starBtn.setAttribute("data-on", String(starred.has(idx)));
+
+    if(revealed){
+      answerZone.innerHTML = '<span class="plate">'+item.a+'</span>';
+    } else {
+      answerZone.innerHTML = '<button class="reveal-btn" id="revealBtn">Show answer <kbd>Space</kbd></button>';
+      document.getElementById("revealBtn").addEventListener("click", ()=>{ revealed = true; renderCard(); });
+    }
+  }
+
+  prevBtn.addEventListener("click", ()=>{
+    if(pos>0){ pos--; revealed=false; renderCard(); }
+  });
+  nextBtn.addEventListener("click", ()=>{
+    if(pos<order.length-1){ pos++; } else { pos = 0; }
+    revealed = false;
+    renderCard();
+  });
+  shuffleBtn.addEventListener("click", shuffleOrder);
+  starBtn.addEventListener("click", ()=>{
+    const idx = order[pos];
+    if(starred.has(idx)) starred.delete(idx); else starred.add(idx);
+    saveStars();
+    renderCard();
+  });
+  starredOnlyBtn.addEventListener("click", ()=>{
+    starredOnly = !starredOnly;
+    starredOnlyBtn.setAttribute("aria-pressed", String(starredOnly));
+    starredOnlyBtn.style.color = starredOnly ? "var(--accent)" : "";
+    rebuildOrder();
+  });
+
+  document.addEventListener("keydown", (e)=>{
+    if(practiceStage.hidden) return;
+    if(e.target.tagName==="INPUT" || e.target.tagName==="TEXTAREA") return;
+    if(e.code==="Space"){ e.preventDefault(); if(!revealed){ revealed=true; renderCard(); } }
+    else if(e.key==="ArrowRight"){ nextBtn.click(); }
+    else if(e.key==="ArrowLeft"){ prevBtn.click(); }
+  });
+
+  // ---------- review mode ----------
+  function renderReview(){
+    reviewStage.innerHTML = "";
+    const groups = currentCat==="All" ? cats.slice(1) : [currentCat];
+    groups.forEach(cat=>{
+      const items = DECK.filter(d=>d.cat===cat);
+      if(items.length===0) return;
+      const wrap = document.createElement("div");
+      wrap.className = "review-group";
+      const h = document.createElement("h2");
+      h.textContent = cat;
+      wrap.appendChild(h);
+      items.forEach(it=>{
+        const row = document.createElement("div");
+        row.className = "review-item";
+        const q = document.createElement("span");
+        q.className = "review-q";
+        q.textContent = it.q;
+        const a = document.createElement("span");
+        a.className = "review-a mono";
+        a.textContent = it.a;
+        row.appendChild(q); row.appendChild(a);
+        wrap.appendChild(row);
+      });
+      reviewStage.appendChild(wrap);
+    });
+  }
+
+  modePractice.addEventListener("click", ()=>{
+    modePractice.setAttribute("aria-pressed","true");
+    modeReview.setAttribute("aria-pressed","false");
+    practiceStage.hidden = false;
+    reviewStage.hidden = true;
+  });
+  modeReview.addEventListener("click", ()=>{
+    modePractice.setAttribute("aria-pressed","false");
+    modeReview.setAttribute("aria-pressed","true");
+    practiceStage.hidden = true;
+    reviewStage.hidden = false;
+    renderReview();
+  });
+
+  // ---------- init ----------
+  renderTopics();
+  rebuildOrder();
+  renderReview();
+})();
+</script>
+</body>
+</html>
